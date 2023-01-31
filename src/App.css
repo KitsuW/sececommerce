@@ -1,0 +1,47 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-height: 500px;
+    max-width: 400px;
+}
+
+.product-images{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.base-image{
+    position: static;
+    display: block;
+}
+
+.hover-image{
+    position: absolute;
+    display: flex;
+}
+
+.hover-image:hover{
+    opacity: 0;
+}
+
+.products-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.home{
+    display: flex;
+}
+
+.home > article{
+    width: 800px;
+}
+
+.products-list > li:hover{
+    cursor: pointer;
+}
