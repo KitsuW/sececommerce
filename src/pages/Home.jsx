@@ -1,24 +1,39 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getProductsThunk } from '../store/slices/products.slice';
+import { filterProductCategoryThunk, filterSearchProduct, getProductsThunk } from '../store/slices/products.slice';
 
 const Home = () => {
 
     const dispatch = useDispatch()
     const productsList = useSelector(state => state.products)
     const navigate = useNavigate()
+    const [categories, setCategories] = useState([])
+    const [searchProduct, setSearchProduct] = useState("")
 
     useEffect(() => {
         dispatch(getProductsThunk())
+        axios.get('https://e-commerce-api-v2.academlo.tech/api/v1/categories')
+        .then(res => setCategories(res.data))
     }, [])
+
+    console.log(productsList)
 
     return (
         <div>
             <h1>Home</h1>
             <div className='home'>
                 <article>
-                    Searchbar
+                    {categories.map( category => (
+                        <button onClick={() => dispatch(filterProductCategoryThunk(category.id))} key={category.id}>{category.name}</button>
+                    ))}
+                    <input  type="text" 
+                            value={searchProduct}
+                            onChange={e => setSearchProduct(e.target.value)}
+                            id='search'/>
+                    <button onClick={() => dispatch(filterSearchProduct(searchProduct))}>O.O</button>
                 </article>
                 <ul className='products-list'>
                     {productsList.map(product => (
