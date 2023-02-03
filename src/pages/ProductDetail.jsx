@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { postCartThunk } from '../store/slices/cart.slice';
 import { filterProductCategoryThunk } from '../store/slices/products.slice';
 
 const ProductDetail = () => {
@@ -22,14 +23,24 @@ const ProductDetail = () => {
                 })
     }, [id])
 
-    console.log(product)
+    const [quantity, setQuantity] = useState(1)
+    const addToCart = () => {
+        const cart = {
+            quantity: quantity,
+            productId: id
+        }
+        dispatch(postCartThunk(cart))
+        console.log(cart)
+    }
+
+
 
     return (
         <div>
             <div>
                 <div>
                     {product.images?.map( image => (
-                        <img src={image.url} alt="" />
+                        <img key={image.url} src={image.url} alt="" />
                     ))}                    
                 </div>
                 <div>
@@ -42,12 +53,12 @@ const ProductDetail = () => {
                         </div>
                         <div>
                             <h4>Quantity</h4>
-                            <button> - </button>
-                            <p> 0 </p>
-                            <button> + </button>
+                            <button onClick={() => setQuantity(quantity -1)}> - </button>
+                            <p> {quantity} </p>
+                            <button onClick={() => setQuantity(quantity +1)}> + </button>
                         </div>
                     </div>
-                <button> Add to cart</button>
+                <button onClick={() => addToCart()}> Add to cart</button>
                 </div>
             </div>
             <div>
@@ -70,6 +81,14 @@ const ProductDetail = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div>
+                <p>
+                    Total:
+                </p>
+                <p>
+                    {}
+                </p>
             </div>
         </div>
     );
